@@ -1,0 +1,17 @@
+#!/bin/bash
+cwd=`cd $(dirname $0);git rev-parse --show-toplevel`
+wd=`git rev-parse --show-toplevel`
+for hook in post-applypatch post-commit post-checkout post-merge post-push; do
+    target=$wd/.git/hooks/$hook
+    cmd="$cwd/bin/log $hook"
+    if [ ! -e $target ]; then
+        echo "#!/bin/bash" >> $target
+        chmod +x $target
+    fi
+    if cat $target | grep -q "$cmd"; then
+        echo "${target} ...skipped"
+    else
+        echo "$cwd/bin/log $hook" >> $target
+        echo "${target} ...installed"
+    fi
+done

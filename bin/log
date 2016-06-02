@@ -1,0 +1,8 @@
+#!/bin/bash -e
+wd=`cd $(dirname $0);git rev-parse --show-toplevel`
+operation=$1
+root_dir=`git rev-parse --show-toplevel`
+current_branch=`git rev-parse --abbrev-ref HEAD`
+now=`date +"%Y-%m-%d %H:%M:%S"`
+target=$wd/log/git-operation.log
+echo "$now\t$operation\t$current_branch" >> $target
